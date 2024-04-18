@@ -9,4 +9,4 @@ const responseSchema = new mongoose.Schema({
     }]
 });
 
-module.exports = mongoose.Model('SurveyResponse', responseSchema)
+module.exports = mongoose.model('SurveyResponse', responseSchema)
