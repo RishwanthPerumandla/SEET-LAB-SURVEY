@@ -25,7 +25,7 @@ mongoose.connect('mongodb://0.0.0.0:27017/seetlab')
 // Routes
 app.use('/api/users', userRouter);
 app.use('/api/surveys', surveyRouter);
-// app.use('/api/responses', responseRouter);
+app.use('/api/responses', responseRouter);
 app.use('/api/auth', authRouter);
 
 // Start the server
