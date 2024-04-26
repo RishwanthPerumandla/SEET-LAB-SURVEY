@@ -9,12 +9,15 @@ import Home from './components/Home';
 import AdminDashboard from './components/AdminDashboard';
 import UserDashboard from './components/UserDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
+import NavBar from './components/NavBar';
 
 const App = () => {
     return (
         <AuthProvider>
             <ThemeProvider theme={theme}>
                 <BrowserRouter>
+                <NavBar />
+
                     <Routes>
                         <Route path="/login" element={<AuthForm />} />
                         <Route path="/" element={<Home />} />

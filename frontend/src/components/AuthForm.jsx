@@ -25,8 +25,12 @@ function AuthForm() {
         const endpoint = isLogin ? 'login' : 'register';
         try {
             const response = await axios.post(`http://localhost:5000/api/auth/${endpoint}`, formData);
-            login(response.data.token);
-            navigate('/');
+            login(response.data.token, response.data.role);
+            if(response.data.role ==="user"){
+                navigate('/user');
+            }else{
+                navigate('/admin');
+            }
         } catch (error) {
             console.error('Authentication failed:', error);
         }

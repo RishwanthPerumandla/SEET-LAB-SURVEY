@@ -27,9 +27,16 @@ router.post('/register', async (req, res) => {
 
         await user.save();
 
+           // Generate a token for the user
+           const token = jwt.sign(
+            { _id: user._id, role: user.role }, 
+            process.env.JWT_key, // Replace 'yourPrivateKey' with your actual secret key
+            { expiresIn: '1h' }
+        );
+
         // Optionally, return the newly created user's information (excluding password)
         const { _id, name, email, role } = user;
-        res.status(201).send({ _id, name, email, role });
+        res.status(201).send({ _id, name, email, role, token });
     } catch (error) {
         res.status(500).send(error.message);
     }
