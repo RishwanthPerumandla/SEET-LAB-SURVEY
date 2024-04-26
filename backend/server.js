@@ -2,7 +2,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const cors = require('cors'); // Import CORS module
+var cors = require('cors')
+
 require('dotenv').config()
 // Import routers
 const userRouter = require('./routes/userRouter');
@@ -13,16 +14,7 @@ const authRouter = require('./routes/authRouter');
 // Initialize Express app
 const app = express();
 const port = process.env.PORT || 5000;
-
-// CORS options
-const corsOptions = {
-    origin: 'http://127.0.0.1:5173', // Allow only this origin to access
-    optionsSuccessStatus: 200 // Some legacy browsers (IE11, various SmartTVs) choke on 204
-};
-
-// Enable CORS with options
-app.use(cors(corsOptions));
-
+app.use(cors())
 
 // Middleware
 app.use(bodyParser.json()); // for parsing application/json
