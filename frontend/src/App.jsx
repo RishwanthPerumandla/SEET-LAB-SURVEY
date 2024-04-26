@@ -10,7 +10,10 @@ import AdminDashboard from './components/AdminDashboard';
 import UserDashboard from './components/UserDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import NavBar from './components/NavBar';
-
+import SurveyList from './components/SurveyList';
+import CreateSurvey from './components/CreateSurvey';
+import EditSurvey from './components/EditSurvey';
+import SurveyDetail from './components/SurveyDetail';
 const App = () => {
     return (
         <AuthProvider>
@@ -21,6 +24,11 @@ const App = () => {
                     <Routes>
                         <Route path="/login" element={<AuthForm />} />
                         <Route path="/" element={<Home />} />
+                        <Route path="/surveys" element={<SurveyList />} />
+                        <Route path="/surveys/:id" element={<SurveyDetail />} />
+
+                        <Route path="/surveys/create" element={<CreateSurvey />} />
+                         <Route path="/surveys/edit/:id" element={<EditSurvey />} />
                         <Route path="/admin" element={
                             <ProtectedRoute allowedRoles={['admin']}>
                                 <AdminDashboard />

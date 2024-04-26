@@ -25,7 +25,7 @@ router.post('/', auth, checkRole('admin'), async (req, res) => {
 // GET all surveys
 router.get('/', auth, async (req, res) => {
     try {
-        const surveys = await Survey.find().populate('createdBy', 'name -_id');
+        const surveys = await Survey.find().select('title createdBy startDateTime endDateTime').populate('createdBy', 'name -_id');
         res.send(surveys);
     } catch (error) {
         console.error("Error details:", error);
