@@ -1,11 +1,14 @@
 // src/components/SurveyDetail.jsx
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate } from 'react-router-dom';
 import axiosWithAuth from './axiosWithAuth';
-import { Typography,Box, Container, FormControl, FormControlLabel, RadioGroup, Radio, Checkbox, TextField, Button } from '@mui/material';
+import { Typography,Box,IconButton, Container, FormControl, FormControlLabel, RadioGroup, Radio, Checkbox, TextField, Button } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const SurveyDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const [survey, setSurvey] = useState(null);
   const [responses, setResponses] = useState({});
 
@@ -23,6 +26,10 @@ const [submissionError, setSubmissionError] = useState('');
     };
     fetchSurvey();
   }, [id]);
+
+  const handleBack = () => {
+    navigate(-1);  // This will take the user back to the previous page, typically the survey list.
+  };
 
   const initializeResponses = (questions) => {
     const initialResponses = {};
@@ -73,7 +80,14 @@ const [submissionError, setSubmissionError] = useState('');
 
   return (
     <Container>
-    <Typography variant="h4">{survey.title}</Typography>
+            <Box sx={{ my: 2 }}>
+        <IconButton onClick={handleBack} aria-label="back">
+          <ArrowBackIcon />
+        </IconButton>
+        <Typography variant="h4" sx={{ display: 'inline', marginLeft: 2 }}>
+          {survey.title}
+        </Typography>
+      </Box>
     {!submissionSuccess ? (
       <>
         {survey.questions.map(question => (

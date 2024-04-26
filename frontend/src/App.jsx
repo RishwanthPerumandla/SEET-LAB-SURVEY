@@ -24,8 +24,18 @@ const App = () => {
                     <Routes>
                         <Route path="/login" element={<AuthForm />} />
                         <Route path="/" element={<Home />} />
-                        <Route path="/surveys" element={<SurveyList />} />
-                        <Route path="/surveys/:id" element={<SurveyDetail />} />
+                        <Route path="/surveys" element={
+                            <ProtectedRoute allowedRoles={['user', 'admin']}>    
+                        
+                        <SurveyList />
+                        </ProtectedRoute>    
+                        
+                        } />
+                        <Route path="/surveys/:id" element={
+                            <ProtectedRoute allowedRoles={['user', 'admin']}>    
+                                <SurveyDetail/>
+                        </ProtectedRoute>
+                    } />
 
                         <Route path="/surveys/create" element={<CreateSurvey />} />
                          <Route path="/surveys/edit/:id" element={<EditSurvey />} />
