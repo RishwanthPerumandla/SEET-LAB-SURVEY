@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axiosWithAuth from './axiosWithAuth';
-import { Typography, Box, IconButton, Container, Button } from '@mui/material';
+import { Typography, Box, Grid, IconButton, Container, Button } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SurveyQuestions from './SurveyQuestions'; // Assuming SurveyQuestions is updated
 
@@ -45,16 +45,31 @@ const SurveyDetail = () => {
   return (
     <Container>
       <Box sx={{ my: 2 }}>
-        <IconButton onClick={handleBack}>
-          <ArrowBackIcon />
-        </IconButton>
-        <Typography variant="h4">{survey.title}</Typography>
+        <Grid container alignItems="center" spacing={2}>
+        <Grid item>
+            <IconButton onClick={handleBack}>
+              <ArrowBackIcon />
+            </IconButton>
+          </Grid>
+          <Grid item>
+            <Typography variant="h4">{survey.title}</Typography>
+          </Grid>
+          <Grid item>
+            <Button variant="outlined" component={Link} to={`/responses/analytics/survey/${id}`}>
+              View Analytics
+            </Button>
+            <Button variant="outlined" component={Link} to={`/responses/${id}`}>
+              View Responses
+            </Button>
+          </Grid>
+        </Grid>
+      
       </Box>
       <SurveyQuestions questions={survey.questions} onChange={handleResponsesChange} />
       <Button variant="contained" color="primary" onClick={handleSubmitResponses}>Submit Responses</Button>
-      <Button variant="contained" color="primary">
+      {/* <Button variant="contained" color="primary">
         <Link to={`/responses/${id}`} style={{ textDecoration: 'none', color: 'white' }}>View Responses</Link>
-      </Button>
+      </Button> */}
     </Container>
   );
 };

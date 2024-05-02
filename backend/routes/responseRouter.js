@@ -75,7 +75,36 @@ router.get('/response/:responseId', auth, async (req, res) => {
     }
 });
 
-
+// GET analytics for a specific survey
+router.get('/analytics/:surveyId', async (req, res) => {
+    try {
+      const surveyId = req.params.surveyId;
+      const responses = await SurveyResponse.find({ surveyId });
+  
+      // Example analytics calculation
+      const totalResponses = responses.length;
+      const questionAnalytics = {};
+  
+      // Iterate over responses to aggregate data
+      responses.forEach(response => {
+        response.responses.forEach(entry => {
+          const { questionId, answer } = entry;
+          if (!questionAnalytics[questionId]) {
+            questionAnalytics[questionId] = {};
+          }
+          if (!questionAnalytics[questionId][answer]) {
+            questionAnalytics[questionId][answer] = 0;
+          }
+          questionAnalytics[questionId][answer]++;
+        });
+      });
+  
+      res.status(200).json({ totalResponses, questionAnalytics });
+    } catch (error) {
+      console.error('Error fetching survey analytics:', error);
+      res.status(500).json({ message: 'Failed to fetch survey analytics' });
+    }
+  });
 
 // DELETE a survey response (Admin only)
 router.delete('/response/:responseId', auth, async (req, res) => {

@@ -20,6 +20,7 @@ import UserEdit from './components/UserEdit';
 import Dashboard from './components/Dashboard';
 import SurveyResponsesList from './components/SurveyResponseList';
 import SurveyResponseDetail from './components/SurveyResponseDetail';
+import SurveyAnalytics from './components/SurveyAnalytics';
 
 const App = () => {
     const { isAuthenticated } = useAuth(); // Get isAuthenticated from useAuth
@@ -97,6 +98,11 @@ const App = () => {
                         <Route path="/response/:responseId" element={
                             <ProtectedRoute allowedRoles={['user', 'admin']}>
                                 <SurveyResponseDetail />
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/responses/analytics/survey/:surveyId" element={
+                            <ProtectedRoute allowedRoles={['user', 'admin']}>
+                                <SurveyAnalytics />
                             </ProtectedRoute>
                         } />
                     </Routes>
