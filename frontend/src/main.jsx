@@ -4,12 +4,16 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme'; // Ensure this imports correctly
+import { AuthProvider, useAuth } from './context/AuthContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
+        <AuthProvider>
+
         <ThemeProvider theme={theme}>
             <App />
         </ThemeProvider>
+        </AuthProvider>
     </React.StrictMode>
 );

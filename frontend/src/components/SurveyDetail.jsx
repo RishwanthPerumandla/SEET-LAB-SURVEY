@@ -1,10 +1,11 @@
 // src/components/SurveyDetail.jsx
+
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import axiosWithAuth from './axiosWithAuth';
 import { Typography, Box, IconButton, Container, Button } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import SurveyQuestions from './SurveyQuestions';  // Assumes SurveyQuestions is updated
+import SurveyQuestions from './SurveyQuestions'; // Assuming SurveyQuestions is updated
 
 const SurveyDetail = () => {
   const { id } = useParams();
@@ -13,9 +14,16 @@ const SurveyDetail = () => {
   const [responses, setResponses] = useState({});
 
   useEffect(() => {
-    axiosWithAuth.get(`/surveys/${id}`)
-      .then(response => setSurvey(response.data))
-      .catch(error => console.error('Error fetching survey:', error));
+    const fetchSurvey = async () => {
+      try {
+        const response = await axiosWithAuth.get(`/surveys/${id}`);
+        setSurvey(response.data);
+      } catch (error) {
+        console.error('Error fetching survey:', error);
+      }
+    };
+
+    fetchSurvey();
   }, [id]);
 
   const handleBack = () => {
@@ -43,7 +51,10 @@ const SurveyDetail = () => {
         <Typography variant="h4">{survey.title}</Typography>
       </Box>
       <SurveyQuestions questions={survey.questions} onChange={handleResponsesChange} />
-      <Button onClick={handleSubmitResponses} variant="contained" color="primary">Submit Responses</Button>
+      <Button variant="contained" color="primary" onClick={handleSubmitResponses}>Submit Responses</Button>
+      <Button variant="contained" color="primary">
+        <Link to={`/responses/${id}`} style={{ textDecoration: 'none', color: 'white' }}>View Responses</Link>
+      </Button>
     </Container>
   );
 };

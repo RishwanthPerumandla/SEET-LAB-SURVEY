@@ -27,7 +27,7 @@ const Dashboard = () => {
                         <Button variant="contained" onClick={() => navigate('/users')}>
                             Manage Users
                         </Button>
-                        <Button variant="contained" onClick={() => navigate('/create-survey')}>
+                        <Button variant="contained" onClick={() => navigate('/survey/create')}>
                             Create Survey
                         </Button>
                     </>

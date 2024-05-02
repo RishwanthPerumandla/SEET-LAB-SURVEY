@@ -1,7 +1,7 @@
 // src/App.jsx
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 import AuthForm from './components/AuthForm';
@@ -18,15 +18,24 @@ import Sidebar from './components/SideBar';
 import UserList from './components/UserList';
 import UserEdit from './components/UserEdit';
 import Dashboard from './components/Dashboard';
+import SurveyResponsesList from './components/SurveyResponseList';
+import SurveyResponseDetail from './components/SurveyResponseDetail';
 
 const App = () => {
+    const { isAuthenticated } = useAuth(); // Get isAuthenticated from useAuth
+    
+    if (isAuthenticated === undefined) {
+        // Return loading state or placeholder while authentication context is initializing
+        return <div>Loading...</div>;
+    }
     return (
-        <AuthProvider>
             <ThemeProvider theme={theme}>
                 <BrowserRouter>
                 {/* <NavBar /> */}
-        <Sidebar />
-                    <Routes>
+                {isAuthenticated && <Sidebar />} {/* Render Sidebar only when isAuthenticated */}
+
+                    {/*     const { isAuthenticated } = useAuth(); // Get isAuthenticated from useAuth */}
+                    <Routes> 
                         <Route path="/login" element={<AuthForm />} />
                         {/* <Route path="/" element={<Home />} /> */}
                         <Route path="/surveys" element={
@@ -80,10 +89,19 @@ const App = () => {
                                 <UserDashboard />
                             </ProtectedRoute>
                         } />
+                        <Route path="/responses/:surveyId" element={
+                            <ProtectedRoute allowedRoles={['user', 'admin']}>
+                                <SurveyResponsesList />
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/response/:responseId" element={
+                            <ProtectedRoute allowedRoles={['user', 'admin']}>
+                                <SurveyResponseDetail />
+                            </ProtectedRoute>
+                        } />
                     </Routes>
                 </BrowserRouter>
             </ThemeProvider>
-        </AuthProvider>
     );
 };
 

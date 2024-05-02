@@ -21,6 +21,7 @@ const getDbInstance = (dbName) => {
     db.model('User', UserModel.schema);
     db.model('Survey', SurveyModel.schema);
     db.model('SurveyResponse', SurveyResponseModel.schema);
+    db.model('SurveyResponse', Question.schema);
     // db.model('User', UserModel.schema);
     // Register other models as needed...
 

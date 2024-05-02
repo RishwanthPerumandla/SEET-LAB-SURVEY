@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const SurveyResponse = require('../models/surveyResponseModel'); // Adjust path as necessary
-const Survey = require('../models/surveyModel'); // To validate survey existence
+const { Survey, Question }  = require('../models/surveyModel'); // Import the Survey model
 const { auth } = require('../middleware/auth'); // Assuming authentication middleware is used
 
 // POST to submit a new survey response
@@ -41,20 +41,41 @@ router.get('/:surveyId', auth, async (req, res) => {
         res.status(500).send("An error occurred while retrieving survey responses.");
     }
 });
-
-// GET a single survey response by ID
+// GET a specific survey response by ID
 router.get('/response/:responseId', auth, async (req, res) => {
     try {
         const response = await SurveyResponse.findById(req.params.responseId).populate('respondent', 'name -_id');
+        
         if (!response) {
             return res.status(404).send('Response not found.');
         }
-        res.send(response);
+
+        const populatedResponses = await Promise.all(response.responses.map(async res => {
+            // Assuming res.questionId contains the question's ID
+            const question = await Question.findById(res.questionId);
+            return {
+                ...res._doc,
+                question: {
+                    text: question.text,
+                    type: question.type,
+                    options: question.options
+                }
+            };
+        }));
+
+        const detailedResponse = {
+            ...response._doc,
+            responses: populatedResponses
+        };
+
+        res.send(detailedResponse);
     } catch (error) {
         console.error("Error details:", error);
         res.status(500).send("An error occurred while retrieving the survey response.");
     }
 });
+
+
 
 // DELETE a survey response (Admin only)
 router.delete('/response/:responseId', auth, async (req, res) => {

@@ -11,7 +11,7 @@ const SurveyResponsesList = () => {
     useEffect(() => {
         const fetchResponses = async () => {
             try {
-                const { data } = await axiosWithAuth().get(`/responses/${surveyId}`);
+                const { data } = await axiosWithAuth.get(`/responses/${surveyId}`);
                 setResponses(data);
             } catch (error) {
                 console.error('Error fetching responses:', error);

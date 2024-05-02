@@ -1,26 +1,39 @@
 const express = require('express');
 const router = express.Router();
-const Survey = require('../models/surveyModel'); // Ensure this path matches your file structure
+const {Survey, Question} = require('../models/surveyModel'); // To validate survey existence
 const { auth, checkRole } = require('../middleware/auth'); // Assuming you have these middleware
-
-// POST to create a new survey (Admin only)
-// POST endpoint to create a new survey with scheduling
 router.post('/', auth, checkRole('admin'), async (req, res) => {
+    const { title, createdBy, questions, startDateTime, endDateTime } = req.body;
+
     try {
-        const survey = new Survey({
-            title: req.body.title,
-            createdBy: req.user._id,
-            questions: req.body.questions,
-            startDateTime: req.body.startDateTime,
-            endDateTime: req.body.endDateTime
+        // Save each question to the Question collection and collect their IDs
+        const questionIds = [];
+        for (const questionData of questions) {
+            const newQuestion = new Question(questionData);
+            const savedQuestion = await newQuestion.save();
+            questionIds.push(savedQuestion._id);
+        }
+
+        // Create the new survey with the collected question IDs
+        const newSurvey = new Survey({
+            title,
+            createdBy: req.user._id, // Assuming the creator's ID comes from authentication
+            questions: questionIds, // Reference to questions in the Question collection
+            startDateTime,
+            endDateTime
         });
-        await survey.save();
-        res.status(201).send(survey);
+
+        // Save the survey
+        await newSurvey.save();
+        res.status(201).send(newSurvey);
     } catch (error) {
-        console.error("Error details:", error);
-        res.status(500).send("An error occurred while creating the survey.");
+        console.error("Error creating survey:", error);
+        res.status(500).send({ message: "Failed to create survey", error: error.message });
     }
 });
+
+
+
 
 // GET all surveys
 router.get('/', auth, async (req, res) => {
@@ -36,16 +49,23 @@ router.get('/', auth, async (req, res) => {
 // GET a specific survey by ID
 router.get('/:id', auth, async (req, res) => {
     try {
-        const survey = await Survey.findById(req.params.id).populate('createdBy', 'name -_id');
+        // Populate the 'questions' field which refers to the 'Question' model
+        const survey = await Survey.findById(req.params.id)
+                                   .populate('questions');  // Corrected from 'Question' to 'questions'
+
         if (!survey) {
+            console.log('No survey found with ID:', req.params.id);
             return res.status(404).send('Survey not found.');
         }
+        
+        console.log('Fetched survey with questions:', survey);
         res.send(survey);
     } catch (error) {
         console.error("Error details:", error);
         res.status(500).send("An error occurred while retrieving the survey.");
     }
 });
+
 // PUT endpoint to update a survey's content and/or schedule (Admin only)
 router.put('/:id', auth, checkRole('admin'), async (req, res) => {
     try {

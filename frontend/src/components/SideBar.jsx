@@ -1,6 +1,6 @@
 // src/components/Sidebar.jsx
 import React from 'react';
-import { Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Typography, Box } from '@mui/material';
+import { Drawer, List, ListItem,Button, ListItemIcon, ListItemText, IconButton, Typography, Box } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import UserIcon from '@mui/icons-material/Person';
@@ -10,7 +10,7 @@ import { useAuth } from '../context/AuthContext'; // Assuming useAuth provides u
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = React.useState(false);
-    const { userRole } = useAuth();
+    const { userRole, logout  } = useAuth();
     const navigate = useNavigate();
 
     const toggleDrawer = (open) => (event) => {
@@ -31,6 +31,11 @@ const Sidebar = () => {
     const handleNavigation = (path) => {
         navigate(path);
         setIsOpen(false); // Close the drawer upon selection
+    };
+
+    const handleLogout = () => {
+        logout(); // Call the logout function from useAuth context
+        navigate('/login'); // Redirect to the login page
     };
 
     return (
@@ -60,7 +65,10 @@ const Sidebar = () => {
                             </ListItem>
                         ))}
                     </List>
+                    <Button variant="contained" color="secondary" onClick={handleLogout}>Logout</Button> {/* Logout Button */}
+
                 </Box>
+
             </Drawer>
         </div>
     );
