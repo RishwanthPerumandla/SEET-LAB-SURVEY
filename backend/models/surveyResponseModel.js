@@ -8,7 +8,7 @@ const responseEntrySchema = new mongoose.Schema({
     },
     answer: [{ 
         type: String,  // Allows for multiple answers where necessary
-        required: true
+        // required: true  
     }]
 });
 

@@ -1,10 +1,16 @@
-// Example of using axiosWithAuth in a component
+// src/components/SurveyList.jsx
 import React, { useEffect, useState } from 'react';
 import axiosWithAuth from './axiosWithAuth';
 import Grid from '@mui/material/Grid';
 import SurveyCard from './SurveyCard';
+import { Button, Box } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+
 const SurveyList = () => {
   const [surveys, setSurveys] = useState([]);
+  const { userRole } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSurveys = async () => {
@@ -13,24 +19,37 @@ const SurveyList = () => {
         setSurveys(response.data);
       } catch (error) {
         console.error('Error fetching surveys:', error);
-        // Handle errors here, e.g., redirect to login if unauthorized
       }
     };
 
     fetchSurveys();
   }, []);
 
+  const handleCreateSurvey = () => {
+    navigate('/surveys/create');
+  };
+
   return (
-    <div>
+    <Box sx={{ margin: 4 }}>
       <h1>Survey List</h1>
+      {userRole === 'admin' && (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleCreateSurvey}
+          sx={{ marginBottom: 2 }}
+        >
+          Create New Survey
+        </Button>
+      )}
       <Grid container spacing={2}>
-      {surveys.map(survey => (
-        <Grid item key={survey._id} xs={12} sm={6} md={4}>
-          <SurveyCard survey={survey} />
-        </Grid>
-      ))}
-    </Grid>
-    </div>
+        {surveys.map(survey => (
+          <Grid item key={survey._id} xs={12} sm={6} md={4}>
+            <SurveyCard survey={survey} />
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
   );
 };
 
