@@ -21,9 +21,12 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 // Connect to MongoDB
-mongoose.connect('mongodb://0.0.0.0:27017/seetlab')
+mongoose.connect('mongodb+srv://viswaprateek248:viswa@cluster0.2ajhbbl.mongodb.net/seetlab')
 .then(() => console.log('Connected to MongoDB...'))
 .catch(err => console.error('Could not connect to MongoDB...', err));
+// mongoose.connect('mongodb://0.0.0.0:27017/seetlab')
+// .then(() => console.log('Connected to MongoDB...'))
+// .catch(err => console.error('Could not connect to MongoDB...', err));
 
 // Routes
 app.use('/api/users', userRouter);
