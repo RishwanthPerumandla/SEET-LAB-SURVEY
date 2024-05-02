@@ -1,9 +1,8 @@
-// src/components/SurveyList.jsx
 import React, { useEffect, useState } from 'react';
 import axiosWithAuth from './axiosWithAuth';
 import Grid from '@mui/material/Grid';
 import SurveyCard from './SurveyCard';
-import { Button, Box } from '@mui/material';
+import { Button, Box, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -31,7 +30,7 @@ const SurveyList = () => {
 
   return (
     <Box sx={{ margin: 4 }}>
-      <h1>Survey List</h1>
+      <Typography variant="h4" mb={2}>Survey List</Typography>
       {userRole === 'admin' && (
         <Button
           variant="contained"

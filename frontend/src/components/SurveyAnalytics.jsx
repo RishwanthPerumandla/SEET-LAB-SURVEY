@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axiosWithAuth from './axiosWithAuth';
 import { Paper, Typography, Button } from '@mui/material';
-import { VictoryBar, VictoryChart, VictoryAxis, VictoryLabel } from 'victory';
+import { VictoryBar, VictoryChart, VictoryAxis } from 'victory';
 
 const SurveyAnalytics = () => {
     const { surveyId } = useParams();
@@ -22,7 +22,7 @@ const SurveyAnalytics = () => {
     }, [surveyId]);
 
     const handleBack = () => {
-        navigate(-1); // Go back to previous page
+        navigate(-1); // Go back to the previous page
     };
 
     return (
@@ -36,7 +36,11 @@ const SurveyAnalytics = () => {
                     {Object.keys(analytics.questionAnalytics).map(questionId => (
                         <div key={questionId}>
                             <Typography variant="subtitle1">Question {questionId}</Typography>
-                            <VictoryChart domainPadding={20}>
+                            <VictoryChart
+                                domainPadding={20}
+                                width={400}
+                                height={300}
+                            >
                                 <VictoryAxis
                                     dependentAxis
                                     tickFormat={(x) => `${x}`}

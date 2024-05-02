@@ -1,7 +1,6 @@
-// src/components/Home.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Typography, Container } from '@mui/material';
+import { Box, Button, Typography, Container, Paper } from '@mui/material';
 import { useAuth } from '../context/AuthContext'; // Adjust path as necessary
 
 const Home = () => {
@@ -10,6 +9,10 @@ const Home = () => {
 
     return (
         <Container>
+            <Paper sx={{ p: 2, mb: 4 }}>
+                {/* College Mascot Banner */}
+                <img src="../assets/mastodon-hero-background.jpg" alt="College Mascot" style={{ width: '100%', marginBottom: 16 }} />
+            </Paper>
             <Typography variant="h2" sx={{ mt: 4, mb: 2, textAlign: 'center' }}>
                 Welcome to the SEET Lab Survey Platform
             </Typography>

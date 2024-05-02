@@ -36,7 +36,7 @@ router.post('/register', async (req, res) => {
 
         // Optionally, return the newly created user's information (excluding password)
         const { _id, name, email, role } = user;
-        res.status(201).send({ _id, name, email, role, token });
+        res.status(201).send({ _id, name, email, role, token, username: name });
     } catch (error) {
         res.status(500).send(error.message);
     }

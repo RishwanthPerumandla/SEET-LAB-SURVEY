@@ -1,5 +1,3 @@
-// src/components/SurveyDetail.jsx
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axiosWithAuth from './axiosWithAuth';
@@ -44,10 +42,10 @@ const SurveyDetail = () => {
 
   return (
     <Container>
-      <Box sx={{ my: 2 }}>
+      <Box my={2}>
         <Grid container alignItems="center" spacing={2}>
-        <Grid item>
-            <IconButton onClick={handleBack}>
+          <Grid item>
+            <IconButton onClick={handleBack} aria-label="Back">
               <ArrowBackIcon />
             </IconButton>
           </Grid>
@@ -63,13 +61,9 @@ const SurveyDetail = () => {
             </Button>
           </Grid>
         </Grid>
-      
       </Box>
       <SurveyQuestions questions={survey.questions} onChange={handleResponsesChange} />
       <Button variant="contained" color="primary" onClick={handleSubmitResponses}>Submit Responses</Button>
-      {/* <Button variant="contained" color="primary">
-        <Link to={`/responses/${id}`} style={{ textDecoration: 'none', color: 'white' }}>View Responses</Link>
-      </Button> */}
     </Container>
   );
 };

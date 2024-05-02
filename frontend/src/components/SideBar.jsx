@@ -1,6 +1,5 @@
-// src/components/Sidebar.jsx
 import React from 'react';
-import { Drawer, List, ListItem,Button, ListItemIcon, ListItemText, IconButton, Typography, Box } from '@mui/material';
+import { Drawer, List, ListItem, Button, ListItemIcon, ListItemText, IconButton, Typography, Box } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import UserIcon from '@mui/icons-material/Person';
@@ -10,7 +9,7 @@ import { useAuth } from '../context/AuthContext'; // Assuming useAuth provides u
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = React.useState(false);
-    const { userRole, logout  } = useAuth();
+    const { userRole, logout } = useAuth();
     const navigate = useNavigate();
 
     const toggleDrawer = (open) => (event) => {
@@ -24,8 +23,8 @@ const Sidebar = () => {
         { text: 'Home', icon: <HomeIcon />, path: '/' },
         { text: 'Surveys', icon: <SurveyIcon />, path: '/surveys' },
         ...(userRole === 'admin' ? [{ text: 'Create Survey', icon: <SurveyIcon />, path: '/surveys/create' }] : []),
-        ...(userRole === 'admin' ? [{ text: 'Users', icon: <UserIcon />, path: '/users/' }] : []),  
-        ...(userRole === 'admin' ? [{ text: 'Responses', icon: <UserIcon />, path: '/responses/' }] : [])
+        ...(userRole === 'admin' ? [{ text: 'Users', icon: <UserIcon />, path: '/users/' }] : []),
+        // ...(userRole === 'admin' ? [{ text: 'Responses', icon: <UserIcon />, path: '/responses/' }] : [])
     ];
 
     const handleNavigation = (path) => {
@@ -66,9 +65,7 @@ const Sidebar = () => {
                         ))}
                     </List>
                     <Button variant="contained" color="secondary" onClick={handleLogout}>Logout</Button> {/* Logout Button */}
-
                 </Box>
-
             </Drawer>
         </div>
     );

@@ -1,9 +1,9 @@
-// src/components/AuthForm.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
-import { TextField, Button, Typography, Container, Tab, Tabs, Box, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { TextField, Button, Typography, Container, Tab, Tabs, Box, FormControl, InputLabel, Select, MenuItem, Paper } from '@mui/material';
+import CollegeLogo from '../assets/logo.png'; // Importing college logo image
 
 function AuthForm() {
     const [isLogin, setIsLogin] = useState(true);
@@ -38,14 +38,17 @@ function AuthForm() {
 
     return (
         <Container component="main" maxWidth="xs">
-            <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <Paper elevation={3} sx={{ padding: 4, marginTop: 8 }}>
+                    <img src={CollegeLogo} alt="College Logo" style={{ width: '100%',marginRight: '16px' }} />
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 4 }}>
+                    <Typography component="h1" variant="h5">
+                        {isLogin ? 'Login' : 'Register'}
+                    </Typography>
+                </Box>
                 <Tabs value={isLogin ? 0 : 1} onChange={() => setIsLogin(!isLogin)} aria-label="Login or Register">
                     <Tab label="Login" />
                     <Tab label="Register" />
                 </Tabs>
-                <Typography component="h1" variant="h5">
-                    {isLogin ? 'Login' : 'Register'}
-                </Typography>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                     {!isLogin && (
                         <>
@@ -111,7 +114,7 @@ function AuthForm() {
                         {isLogin ? 'Login' : 'Register'}
                     </Button>
                 </Box>
-            </Box>
+            </Paper>
         </Container>
     );
 }

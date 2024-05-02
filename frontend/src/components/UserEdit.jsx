@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { TextField, Button, Container, FormControl, InputLabel, Select, MenuItem, Box } from '@mui/material';
+import { TextField, Button, Container, FormControl, InputLabel, Select, MenuItem, Box, Typography } from '@mui/material';
 import axiosWithAuth from './axiosWithAuth';
 
 const UserEdit = () => {
     const { userId } = useParams();
     const navigate = useNavigate();
     const [user, setUser] = useState({
-        username: '',
+        name: '',
         email: '',
         role: '',
         password: ''
@@ -18,8 +18,8 @@ const UserEdit = () => {
             const fetchUser = async () => {
                 try {
                     const response = await axiosWithAuth.get(`/users/${userId}`);
-                    const { username, email, role } = response.data;
-                    setUser({ username, email, role });
+                    const { name, email, role } = response.data;
+                    setUser({ name, email, role });
                 } catch (error) {
                     console.error('Failed to fetch user:', error);
                 }
@@ -53,8 +53,15 @@ const UserEdit = () => {
 
     return (
         <Container>
-            <Box component="form" onSubmit={handleSubmit} sx={{ '& .MuiTextField-root': { m: 1 } }}>
-                <TextField label="UserName" name="username" value={user.username} onChange={handleChange} fullWidth required />
+            <Box
+                component="form"
+                onSubmit={handleSubmit}
+                sx={{ '& .MuiTextField-root': { m: 2 }, '& .MuiButton-root': { m: 2 } }}
+            >
+                <Typography variant="h4" gutterBottom>
+                    {userId ? 'Edit User' : 'Create User'}
+                </Typography>
+                <TextField label="Username" name="name" value={user.name} onChange={handleChange} fullWidth required />
                 <TextField label="Email" name="email" type="email" value={user.email} onChange={handleChange} fullWidth required />
                 <FormControl fullWidth>
                     <InputLabel>Role</InputLabel>
@@ -65,9 +72,19 @@ const UserEdit = () => {
                     </Select>
                 </FormControl>
                 {!userId && (
-                    <TextField label="Password" name="password" type="password" value={user.password} onChange={handleChange} fullWidth required />
+                    <TextField
+                        label="Password"
+                        name="password"
+                        type="password"
+                        value={user.password}
+                        onChange={handleChange}
+                        fullWidth
+                        required
+                    />
                 )}
-                <Button type="submit" color="primary" variant="contained" fullWidth>{userId ? 'Update User' : 'Create User'}</Button>
+                <Button type="submit" color="primary" variant="contained" fullWidth>
+                    {userId ? 'Update User' : 'Create User'}
+                </Button>
             </Box>
         </Container>
     );

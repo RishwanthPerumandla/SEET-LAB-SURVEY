@@ -1,4 +1,3 @@
-// src/components/EditSurvey.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
@@ -15,8 +14,12 @@ const EditSurvey = () => {
 
     useEffect(() => {
         const fetchSurvey = async () => {
-            const response = await axiosWithAuth.get(`/surveys/${id}`);
-            setSurvey(response.data);
+            try {
+                const response = await axiosWithAuth.get(`/surveys/${id}`);
+                setSurvey(response.data);
+            } catch (error) {
+                console.error('Error fetching survey:', error);
+            }
         };
         fetchSurvey();
     }, [id]);

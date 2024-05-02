@@ -1,6 +1,5 @@
-// src/components/SurveyQuestions.jsx
 import React, { useState } from 'react';
-import { Typography, Paper, List, ListItem, FormControl, RadioGroup, FormControlLabel, Radio, Checkbox, TextField } from '@mui/material';
+import { Typography, Paper, List, ListItem, FormControl, RadioGroup, FormControlLabel, Radio, Checkbox, TextField, Box } from '@mui/material';
 
 const SurveyQuestions = ({ questions, onChange }) => {
   const [answers, setAnswers] = useState({});
@@ -13,12 +12,12 @@ const SurveyQuestions = ({ questions, onChange }) => {
 
   return (
     <Paper elevation={3} sx={{ p: 2, mt: 2 }}>
-      <Typography variant="h6">Survey Questions</Typography>
+      <Typography variant="h6" mb={2}>Survey Questions</Typography>
       <List>
         {questions.map(question => (
-          <ListItem key={question._id} sx={{ mb: 2 }}>
+          <ListItem key={question._id} sx={{ mb: 4 }}>
             <FormControl component="fieldset" fullWidth>
-              <Typography>{question.text}</Typography>
+              <Typography variant="subtitle1" mb={1}>{question.text}</Typography>
               {question.type === 'multiple_choice_single' && (
                 <RadioGroup
                   name={`question_${question._id}`}
@@ -35,7 +34,7 @@ const SurveyQuestions = ({ questions, onChange }) => {
                     key={option._id}
                     control={
                       <Checkbox
-                          onChange={(e) => {
+                        onChange={(e) => {
                           const currentAnswers = answers[question._id] || [];
                           handleAnswerChange(question._id, e.target.checked
                             ? [...currentAnswers, option._id]
