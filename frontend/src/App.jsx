@@ -17,6 +17,7 @@ import SurveyDetail from './components/SurveyDetail';
 import Sidebar from './components/SideBar';
 import UserList from './components/UserList';
 import UserEdit from './components/UserEdit';
+import Dashboard from './components/Dashboard';
 
 const App = () => {
     return (
@@ -27,7 +28,7 @@ const App = () => {
         <Sidebar />
                     <Routes>
                         <Route path="/login" element={<AuthForm />} />
-                        <Route path="/" element={<Home />} />
+                        {/* <Route path="/" element={<Home />} /> */}
                         <Route path="/surveys" element={
                             <ProtectedRoute allowedRoles={['user', 'admin']}>    
                               <SurveyList />
@@ -69,9 +70,9 @@ const App = () => {
                             <EditSurvey />                 
                         </ProtectedRoute>
                         } />
-                        <Route path="/admin" element={
-                            <ProtectedRoute allowedRoles={['admin']}>
-                                <AdminDashboard />
+                        <Route path="/" element={
+                            <ProtectedRoute allowedRoles={['admin','user']}>
+                                <Dashboard />
                             </ProtectedRoute>
                         } />
                         <Route path="/user" element={

@@ -65,7 +65,7 @@ router.post('/login', async (req, res) => {
         );
 
         // Send the token to the user
-        res.send({ token, role: user.role });
+        res.send({ token, role: user.role, username: user.name });
     } catch (error) {
         res.status(500).send(error.message);
     }

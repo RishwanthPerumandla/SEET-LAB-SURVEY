@@ -3,13 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Typography, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 // import axiosWithAuth from './axiosWithAuth';
-import { useAxiosWithAuth } from '../hooks/useAxiosWithAuth'; // Import the hook
+import  axiosWithAuth  from './axiosWithAuth'; // Import the hook
 
 const UserList = () => {
     const [users, setUsers] = useState([]);
     const navigate = useNavigate();
 
-    const axiosWithAuth = useAxiosWithAuth(); // Use the hook to get axios instance
+    // const axiosWithAuth = axiosWithAuth(); // Use the hook to get axios instance
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -62,7 +62,7 @@ const UserList = () => {
                     <TableBody>
                         {users.map((user) => (
                             <TableRow key={user._id}>
-                                <TableCell>{user.username}</TableCell>
+                                <TableCell>{user.name}</TableCell>
                                 <TableCell>{user.email}</TableCell>
                                 <TableCell>{user.role}</TableCell>
                                 <TableCell>

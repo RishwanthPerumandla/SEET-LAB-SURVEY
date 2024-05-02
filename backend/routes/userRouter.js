@@ -30,6 +30,7 @@ router.get('/', auth, checkRole('admin'), async (req, res) => {
     if (req.user.role !== 'admin') {
         return res.status(403).send('Access denied.');
     }
+    console.log("admin")
     try {
         const users = await User.find().select('-password');  // Exclude passwords from the result
         res.send(users);

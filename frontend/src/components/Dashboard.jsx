@@ -1,10 +1,10 @@
-// src/components/Home.jsx
+// src/components/Dashboard..jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, Typography, Container } from '@mui/material';
 import { useAuth } from '../context/AuthContext'; // Adjust path as necessary
 
-const Home = () => {
+const Dashboard = () => {
     const navigate = useNavigate();
     const { userRole, userName } = useAuth(); // Fetching userName from AuthContext
 
@@ -40,4 +40,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default Dashboard;
