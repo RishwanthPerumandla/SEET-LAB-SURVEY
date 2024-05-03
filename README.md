@@ -1,7 +1,9 @@
 For Backend:
 
 cd backend
-*only for the first time*
+
+
+this command is only for the first time
 npm i 
 
 npm run dev
@@ -9,7 +11,8 @@ npm run dev
 For frontend:
 
 cd frontend
-*only for the first time*
+
+only for the first time
 npm i 
 
 npm run dev
