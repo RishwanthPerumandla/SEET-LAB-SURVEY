@@ -1,32 +1,23 @@
-// Import necessary libraries
+// Import and configure the necessary dependencies
 const express = require('express');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-var cors = require('cors')
+const cors = require('cors');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
-require('dotenv').config()
+// Initialize Express app
+const app = express();
+
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+
 // Import routers
 const userRouter = require('./routes/userRouter');
 const surveyRouter = require('./routes/surveyRouter');
 const responseRouter = require('./routes/responseRouter');
 const authRouter = require('./routes/authRouter');
-
-// Initialize Express app
-const app = express();
-const port = process.env.PORT || 5000;
-app.use(cors())
-
-// Middleware
-app.use(bodyParser.json()); // for parsing application/json
-app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-
-// Connect to MongoDB
-mongoose.connect('mongodb+srv://viswaprateek248:viswa@cluster0.2ajhbbl.mongodb.net/seetlab')
-.then(() => console.log('Connected to MongoDB...'))
-.catch(err => console.error('Could not connect to MongoDB...', err));
-// mongoose.connect('mongodb://0.0.0.0:27017/seetlab')
-// .then(() => console.log('Connected to MongoDB...'))
-// .catch(err => console.error('Could not connect to MongoDB...', err));
 
 // Routes
 app.use('/api/users', userRouter);
@@ -34,7 +25,5 @@ app.use('/api/surveys', surveyRouter);
 app.use('/api/responses', responseRouter);
 app.use('/api/auth', authRouter);
 
-// Start the server
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});
+// Export the app for testing
+module.exports = app;
