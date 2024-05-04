@@ -30,8 +30,9 @@ const SurveyCard = ({ survey }) => {
           {survey.title}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Created by: {survey.createdBy.name}
-        </Typography>
+  Created by: {survey.createdBy && survey.createdBy.name ? survey.createdBy.name : "Unknown"}
+</Typography>
+
         <Typography variant="body2" color="text.secondary">
           Start: {new Date(survey.startDateTime).toLocaleString()}
         </Typography>

@@ -44,22 +44,39 @@ router.get('/:surveyId', auth, async (req, res) => {
 // GET a specific survey response by ID
 router.get('/response/:responseId', auth, async (req, res) => {
     try {
-        const response = await SurveyResponse.findById(req.params.responseId).populate('respondent', 'name -_id');
-        
+        const response = await SurveyResponse.findById(req.params.responseId)
+            .populate({
+                path: 'responses.questionId',
+                populate: { path: 'options' }
+            })
+            .populate('respondent', 'name -_id');
+
         if (!response) {
             return res.status(404).send('Response not found.');
         }
 
-        const populatedResponses = await Promise.all(response.responses.map(async res => {
-            // Assuming res.questionId contains the question's ID
-            const question = await Question.findById(res.questionId);
+        // Transform each response to include question details and map answer IDs to their text or use the answer directly for long answers
+        const populatedResponses = await Promise.all(response.responses.map(async (res) => {
+            const question = res.questionId;
+            if (!question) return { ...res._doc, questionText: "Question not found" };
+
+            let answers;
+            if (question.type === 'long_answer') {
+                // For long answers, use the answer directly
+                answers = res.answer;
+            } else {
+                // Convert answer IDs to their corresponding text values from the question's options
+                answers = res.answer.map(answerId => {
+                    const option = question.options.find(opt => opt._id.toString() === answerId);
+                    return option ? option.text : "Option not found";
+                });
+            }
+
             return {
                 ...res._doc,
-                question: {
-                    text: question.text,
-                    type: question.type,
-                    options: question.options
-                }
+                questionText: question.text,
+                questionType: question.type,
+                answers: Array.isArray(answers) ? answers.join(", ") : answers // Ensure answers are displayed as a string
             };
         }));
 
@@ -74,6 +91,7 @@ router.get('/response/:responseId', auth, async (req, res) => {
         res.status(500).send("An error occurred while retrieving the survey response.");
     }
 });
+
 
 // GET analytics for a specific survey
 router.get('/analytics/:surveyId', async (req, res) => {
